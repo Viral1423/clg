@@ -12,8 +12,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
 # app.secret_key = "Veer4220H"
 app.secret_key = os.environ.get("SECRET_KEY")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+# app.config["MAX_CONTENT_LENGTH"]=5*1024*1025
 app.config["UPLOAD_FOLDER"] = "static/uploads"
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+app.config["UPLOAD_FOLDER"]=UPLOAD_FOLDER
 
 db = SQLAlchemy(app)
 class User(db.Model):
@@ -37,7 +39,6 @@ class Like(db.Model):
 
 
 with app.app_context():
-    db.drop_all()
     db.create_all()
 
 
