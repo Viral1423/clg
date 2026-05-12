@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet"
+    href="{{url_for('static', filename='style.css')}}">
+
+    <title>Profile</title>
+</head>
+
+<body>
+
+    <!-- PROFILE HEADER -->
+
+    <div class="profile-box">
+
+        <div class="profile-avatar">
+            {{user.username[0].upper()}}
+        </div>
+
+        <div class="profile-info">
+
+            <h1>{{user.username}}</h1>
+
+            <p>{{total_post}} Posts</p>
+
+        </div>
+
+    </div>
+
+    <!-- POSTS -->
+
+    <div class="profile-posts">
+
+        {% for post in posts %}
+
+        <div class="post">
+
+            <img
+            src="{{url_for('static',
+            filename='uploads/' + post.image)}}">
+
+            <div class="post-content">
+
+                <p>{{post.caption}}</p>
+
+                <p class="post-date">
+                    {{post.created_at.strftime("%d %b %Y %I:%M %p")}}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+</html>

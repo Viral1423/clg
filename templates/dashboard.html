@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
+    <title>Dashboard</title>
+</head>
+<body>
+    {% with messages =get_flashed_messages()%}
+        {%if messages%}
+            {%for message in messages%}
+                <p>{{message}}</p>
+            {%endfor%}
+        {%endif%}
+    {%endwith%}
+    <div class="navbar">
+        <h1>Welcome {{username}}</h1>
+        <a href="/logout">
+            <button>Logout</button>
+        </a>
+    </div>
+    <div class="uploadbox">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <label for="file-upload" class="custom-file-upload">📸 Choose Photo</label>
+            <input id="file-upload" type="file" name="photo" required>
+            <br><br>
+            <textarea name="caption" placeholder="write a caption" rows="4" cols="40"></textarea>
+            <br><br>
+            <button type="submit">Post</button>
+        </form>
+    </div>
+<div class="posts-grid">
+
+    {% for post in posts %}
+
+    <div class="post">
+
+        <div class="post-header">
+
+            <div class="avatar">
+                {{post.author.username[0].upper()}}
+            </div>
+
+            <a href="/profile/{{post.author.username}}">
+                {{post.author.username}}
+            </a>
+
+        </div>
+
+        <img src="{{url_for('static', filename='uploads/' + post.image)}}">
+
+        <div class="post-content">
+
+            <p>{{post.caption}}</p>
+
+            <p class="post-date">
+                {{post.created_at.strftime("%d %b %Y %I:%M %p")}}
+            </p>
+
+        </div>
+
+        <div class="post-actions">
+
+            <form action="/like/{{post.id}}" method="POST">
+                <button class="like-btn" type="submit">
+                    ❤️ {{post.likes|length}}
+                </button>
+            </form>
+
+            {% if post.author.username == username %}
+            <form action="/delete/{{post.id}}" method="POST">
+                <button class="delete-btn" type="submit">
+                    Delete
+                </button>
+            </form>
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div> 
+</body>
+</html>
